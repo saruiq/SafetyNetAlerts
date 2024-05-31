@@ -33,16 +33,26 @@ public class JsonParser {
 	
 		PersonsProfile personsProfile = objectMapper.readValue(jsonData, PersonsProfile.class);
 		
+		System.out.println("Persons:");
+		System.out.println("--------");
 		 for (Persons p : personsProfile.getPersons()) {
-			 System.out.println(p.getFirstName() + " " + p.getLastName());
+			 System.out.println(p.getFirstName() + " " + p.getLastName()+ ", " + p.getAddress()+ " " + p.getCity()+ " " + p.getZip()+ " " + p.getPhone()+ " " + p.getEmail());
 	     }
+		 
+		 System.out.println("  ");
+		 System.out.println("FireStations:");
+		 System.out.println("-------------");
 		 
 		 for (FireStations f : personsProfile.getFirestations()) {
 			 System.out.println(f.getAddress() + " " + f.getStation());
 		 }
 		 
+		 System.out.println("  ");
+		 System.out.println("MedicalRecords:");
+		 System.out.println("---------------");
+		 
 		 for (MedicalRecords mr : personsProfile.getMedicalrecords()) {
-			 System.out.print(mr.getFirstName() + " " + mr.getLastName());
+			 System.out.print(mr.getFirstName() + " " + mr.getLastName()+ " " + mr.getBirthdate());
 			 System.out.print("  Medications : ");
 			 	for (String s : mr.getMedications())
 			 		System.out.print(s + " ");
