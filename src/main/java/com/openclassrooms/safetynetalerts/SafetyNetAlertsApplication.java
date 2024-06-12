@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import com.openclassrooms.safetynetalerts.utils.JsonParser;
 
 @SpringBootApplication
-@ComponentScan(basePackages="com.openclassrooms.safetynetalerts")
+//@ComponentScan("com.openclassrooms.safetynetalerts.controller")
 public class SafetyNetAlertsApplication {
 
 	public static void main(String[] args) {

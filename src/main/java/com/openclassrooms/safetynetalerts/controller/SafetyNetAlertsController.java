@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openclassrooms.safetynetalerts.model.FireStations;
+import com.openclassrooms.safetynetalerts.model.MedicalRecords;
 import com.openclassrooms.safetynetalerts.model.Persons;
 import com.openclassrooms.safetynetalerts.utils.JsonParser;
 
@@ -27,6 +29,35 @@ public class SafetyNetAlertsController {
 	      JsonParser.printJson();
 	      return new ResponseEntity<>(newPerson, HttpStatus.CREATED);
 	    } catch (Exception e) {
+	    	e.printStackTrace();
+	      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	  }
+	 
+	 @PostMapping("/fireStation")
+	  public ResponseEntity<FireStations> createFireStations(@RequestBody FireStations fireStation) {
+		 logger.info("HTTP POST request received at /fireStation URL ");
+	    try {
+	      FireStations newFireStation = new FireStations(fireStation.getAddress(), fireStation.getStation());
+	      JsonParser.personsProfile.addFireStations(newFireStation);
+	      JsonParser.printJson();
+	      return new ResponseEntity<>(newFireStation, HttpStatus.CREATED);
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	  }
+	 
+	 @PostMapping("/medicalRecord")
+	  public ResponseEntity<MedicalRecords> createMedicalRecords(@RequestBody MedicalRecords medicalRecord) {
+		 logger.info("HTTP POST request received at /medicalRecord URL ");
+	    try {
+	      MedicalRecords newMedicalRecord = new MedicalRecords(medicalRecord.getFirstName(), medicalRecord.getLastName(), medicalRecord.getBirthdate(), medicalRecord.getMedications(), medicalRecord.getAllergies());
+	      JsonParser.personsProfile.addMedicalRecords(newMedicalRecord);
+	      JsonParser.printJson();
+	      return new ResponseEntity<>(newMedicalRecord, HttpStatus.CREATED);
+	    } catch (Exception e) {
+	    	e.printStackTrace();
 	      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	  }
