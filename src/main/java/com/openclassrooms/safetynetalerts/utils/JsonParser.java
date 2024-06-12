@@ -24,15 +24,22 @@ public class JsonParser {
 	
 	Map<String, String> medicalRecordsMap;
 	
+	public static PersonsProfile personsProfile = null;
 	
-	public void parseJsonToObject() throws IOException {
+	
+	public static void parseJsonToObject() throws IOException {
 		
 		File jsonData = new File("src/main/resources/templates/data.json");
 				
 		ObjectMapper objectMapper = new ObjectMapper();
 	
-		PersonsProfile personsProfile = objectMapper.readValue(jsonData, PersonsProfile.class);
+	    personsProfile = objectMapper.readValue(jsonData, PersonsProfile.class);
 		
+		printJson();
+	}
+
+
+	public static void printJson() {
 		System.out.println("Persons:");
 		System.out.println("--------");
 		 for (Persons p : personsProfile.getPersons()) {
@@ -61,6 +68,9 @@ public class JsonParser {
 			 		System.out.print(s + " ");
 			 System.out.println("");
 		 }
+		 
+		 System.out.println("-------------------------------------------------------------------------");
+		 System.out.println("");
 	}
 	
 	

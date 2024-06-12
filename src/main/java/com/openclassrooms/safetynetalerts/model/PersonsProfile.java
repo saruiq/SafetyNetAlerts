@@ -1,5 +1,9 @@
 package com.openclassrooms.safetynetalerts.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class PersonsProfile {
 	
 	Persons[] persons;
@@ -31,6 +35,16 @@ public class PersonsProfile {
 	public void setMedicalrecords(MedicalRecords[] medicalrecords) {
 		this.medicalrecords = medicalrecords;
 	}
+	
+	public void addPersons(Persons person) {
+		List<Persons> personList = new ArrayList<Persons>();
+		personList = Arrays.asList(persons);
+		personList.add(person);
+		persons = personList.toArray(persons);
+		
+	}
+	
+	
 
 
 }
