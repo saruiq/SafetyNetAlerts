@@ -2,9 +2,9 @@ package com.openclassrooms.safetynetalerts.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,6 +58,20 @@ public class SafetyNetAlertsController {
 		    }
 	    }
 	 
+	 @DeleteMapping("/person")
+	  public ResponseEntity<Persons> deletePersons(@RequestBody Persons persons) {
+		 logger.info("HTTP DELETE request received at /person URL ");
+		 try {
+			 HttpStatus httpStatus = personService.deletePersonsByName(persons);
+			 //Persons updatedPerson = new Persons(persons.getFirstName(), persons.getLastName(), persons.getAddress(), persons.getCity(), persons.getZip(), persons.getPhone(), persons.getEmail());
+			 JsonParser.printJson();
+		      return new ResponseEntity<>(null, httpStatus);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	    }
+	 
 	 @PostMapping("/fireStation")
 	  public ResponseEntity<FireStations> createFireStations(@RequestBody FireStations fireStation) {
 		 logger.info("HTTP POST request received at /fireStation URL ");
@@ -72,6 +86,20 @@ public class SafetyNetAlertsController {
 	    }
 	  }
 	 
+	 @PutMapping("/fireStation")
+	  public ResponseEntity<FireStations> updateFireStations(@RequestBody FireStations fireStation) {
+		 logger.info("HTTP PUT request received at /fireStation URL ");
+	    try {
+	    	HttpStatus httpStatus = fireStationService.findAndUpdateFireStationsNumberByAddress(fireStation);
+	    	FireStations updatedFireStation = new FireStations(fireStation.getAddress(), fireStation.getStation());
+	      JsonParser.printJson();
+	      return new ResponseEntity<>(updatedFireStation, httpStatus);
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	    }
+	  }
+	 
 	 @PostMapping("/medicalRecord")
 	  public ResponseEntity<MedicalRecords> createMedicalRecords(@RequestBody MedicalRecords medicalRecord) {
 		 logger.info("HTTP POST request received at /medicalRecord URL ");
@@ -80,6 +108,20 @@ public class SafetyNetAlertsController {
 	      medicalRecordService.addMedicalRecords(newMedicalRecord);
 	      JsonParser.printJson();
 	      return new ResponseEntity<>(newMedicalRecord, HttpStatus.CREATED);
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	  }
+	 
+	 @PutMapping("/medicalRecord")
+	  public ResponseEntity<MedicalRecords> updateMedicalRecords(@RequestBody MedicalRecords medicalRecord) {
+		 logger.info("HTTP PUT request received at /medicalRecord URL ");
+	    try {
+	    	HttpStatus httpStatus = medicalRecordService.findAndUpdateMedicalRecordsByName(medicalRecord);
+	    	MedicalRecords updatedMedicalRecord =  new MedicalRecords(medicalRecord.getFirstName(), medicalRecord.getLastName(), medicalRecord.getBirthdate(), medicalRecord.getMedications(), medicalRecord.getAllergies());
+	      JsonParser.printJson();
+	      return new ResponseEntity<>(updatedMedicalRecord, httpStatus);
 	    } catch (Exception e) {
 	    	e.printStackTrace();
 	      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

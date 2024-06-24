@@ -28,11 +28,25 @@ public class PersonService {
 				p.setZip(person.getZip());
 				p.setPhone(person.getPhone());
 				p.setEmail(person.getEmail());
+				return HttpStatus.OK;
+			}	
+		}
+		System.out.println("Person Not Found");
+		return HttpStatus.INTERNAL_SERVER_ERROR;
+	}
+	
+	public HttpStatus deletePersonsByName(Persons person) {
+		Persons[] persons = JsonParser.personsProfile.getPersons();
+		List<Persons> personList = new ArrayList<Persons>(Arrays.asList(persons));
+		for(Persons p : personList) {
+			if(p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
+				personList.remove(p);
+				persons = personList.toArray(persons);	
 				JsonParser.personsProfile.setPersons(persons);
 				return HttpStatus.OK;
 			}	
 		}
-		System.out.println("Person not found");
+		System.out.println("Person Not Found");
 		return HttpStatus.INTERNAL_SERVER_ERROR;
 	}
 
