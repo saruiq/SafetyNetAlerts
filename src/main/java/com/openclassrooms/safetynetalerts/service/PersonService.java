@@ -36,18 +36,26 @@ public class PersonService {
 	}
 	
 	public HttpStatus deletePersonsByName(Persons person) {
+		Boolean personDeleted = false;
 		Persons[] persons = JsonParser.personsProfile.getPersons();
-		List<Persons> personList = new ArrayList<Persons>(Arrays.asList(persons));
-		for(Persons p : personList) {
-			if(p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
-				personList.remove(p);
-				persons = personList.toArray(persons);	
-				JsonParser.personsProfile.setPersons(persons);
-				return HttpStatus.OK;
-			}	
+		List<Persons> personList = new ArrayList<Persons>();
+		for(Persons p : persons) {
+			if(!p.getFirstName().equals(person.getFirstName()) && !p.getLastName().equals(person.getLastName())) {
+				personList.add(p);
+				continue;
+			}
+			personDeleted = true;
 		}
-		System.out.println("Person Not Found");
-		return HttpStatus.INTERNAL_SERVER_ERROR;
+		if(personDeleted == true) {
+			Persons[] newPersonsArray = new Persons[personList.size()];
+			newPersonsArray = personList.toArray(newPersonsArray);
+			JsonParser.personsProfile.setPersons(newPersonsArray);
+			return HttpStatus.OK;
+		}else {
+			System.out.println("Person Not Found");
+			return HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+	
 	}
 
 }
