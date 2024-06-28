@@ -19,7 +19,7 @@ public class FireStationService {
 		JsonParser.personsProfile.setFirestations(firestations);
 	}
 	
-	public HttpStatus findAndUpdateFireStationsNumberByAddress(FireStations fireStation) {
+	public HttpStatus updateFireStationsNumberByAddress(FireStations fireStation) {
 		FireStations[] firestations = JsonParser.personsProfile.getFirestations();
 		for(FireStations f : firestations) {
 			if(f.getAddress().equals(fireStation.getAddress())) {
@@ -29,6 +29,30 @@ public class FireStationService {
 		}
 		System.out.println("FireStation Address Not Found");
 		return HttpStatus.INTERNAL_SERVER_ERROR;
+	}
+	
+	
+	public HttpStatus deleteFireStationsByAddress(FireStations fireStation) {
+		Boolean firestationDeleted = false;
+		FireStations[] fireStations = JsonParser.personsProfile.getFirestations();
+		List<FireStations> fireStationsList = new ArrayList<FireStations>();
+		for(FireStations f : fireStations) {
+			if(!f.getAddress().equals(fireStation.getAddress())) {
+				fireStationsList.add(f);
+				continue;
+			}
+			firestationDeleted = true;
+		}
+		if(firestationDeleted == true) {
+			FireStations[] newFireStationsArray = new FireStations[fireStationsList.size()];
+			newFireStationsArray = fireStationsList.toArray(newFireStationsArray);
+			JsonParser.personsProfile.setFirestations(newFireStationsArray);
+			return HttpStatus.OK;
+		}else {
+			System.out.println("FireStation Address Not Found");
+			return HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+	
 	}
 
 }

@@ -19,7 +19,7 @@ public class PersonService {
 		JsonParser.personsProfile.setPersons(persons);	
 	}
 	
-	public HttpStatus findAndUpdatePersonsByName(Persons person) {
+	public HttpStatus updatePersonsByName(Persons person) {
 		Persons[] persons = JsonParser.personsProfile.getPersons();
 		for(Persons p : persons) {
 			if(p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {

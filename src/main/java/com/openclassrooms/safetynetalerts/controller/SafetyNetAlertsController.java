@@ -48,7 +48,7 @@ public class SafetyNetAlertsController {
 	  public ResponseEntity<Persons> updatePersons(@RequestBody Persons persons) {
 		 logger.info("HTTP PUT request received at /person URL ");
 		 try {
-			 HttpStatus httpStatus = personService.findAndUpdatePersonsByName(persons);
+			 HttpStatus httpStatus = personService.updatePersonsByName(persons);
 			 Persons updatedPerson = new Persons(persons.getFirstName(), persons.getLastName(), persons.getAddress(), persons.getCity(), persons.getZip(), persons.getPhone(), persons.getEmail());
 			 JsonParser.printJson();
 		      return new ResponseEntity<>(updatedPerson, httpStatus);
@@ -63,7 +63,6 @@ public class SafetyNetAlertsController {
 		 logger.info("HTTP DELETE request received at /person URL ");
 		 try {
 			 HttpStatus httpStatus = personService.deletePersonsByName(persons);
-			 //Persons updatedPerson = new Persons(persons.getFirstName(), persons.getLastName(), persons.getAddress(), persons.getCity(), persons.getZip(), persons.getPhone(), persons.getEmail());
 			 JsonParser.printJson();
 		      return new ResponseEntity<>(null, httpStatus);
 		    } catch (Exception e) {
@@ -90,7 +89,7 @@ public class SafetyNetAlertsController {
 	  public ResponseEntity<FireStations> updateFireStations(@RequestBody FireStations fireStation) {
 		 logger.info("HTTP PUT request received at /fireStation URL ");
 	    try {
-	    	HttpStatus httpStatus = fireStationService.findAndUpdateFireStationsNumberByAddress(fireStation);
+	    	HttpStatus httpStatus = fireStationService.updateFireStationsNumberByAddress(fireStation);
 	    	FireStations updatedFireStation = new FireStations(fireStation.getAddress(), fireStation.getStation());
 	      JsonParser.printJson();
 	      return new ResponseEntity<>(updatedFireStation, httpStatus);
@@ -99,6 +98,19 @@ public class SafetyNetAlertsController {
 	      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	    }
 	  }
+	 
+	 @DeleteMapping("/fireStation")
+	  public ResponseEntity<Persons> deleteFireStations(@RequestBody FireStations fireStation) {
+		 logger.info("HTTP DELETE request received at /fireStation URL ");
+		 try {
+			 HttpStatus httpStatus = fireStationService.deleteFireStationsByAddress(fireStation);
+			 JsonParser.printJson();
+		      return new ResponseEntity<>(null, httpStatus);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	    }
 	 
 	 @PostMapping("/medicalRecord")
 	  public ResponseEntity<MedicalRecords> createMedicalRecords(@RequestBody MedicalRecords medicalRecord) {
@@ -118,7 +130,7 @@ public class SafetyNetAlertsController {
 	  public ResponseEntity<MedicalRecords> updateMedicalRecords(@RequestBody MedicalRecords medicalRecord) {
 		 logger.info("HTTP PUT request received at /medicalRecord URL ");
 	    try {
-	    	HttpStatus httpStatus = medicalRecordService.findAndUpdateMedicalRecordsByName(medicalRecord);
+	    	HttpStatus httpStatus = medicalRecordService.updateMedicalRecordsByName(medicalRecord);
 	    	MedicalRecords updatedMedicalRecord =  new MedicalRecords(medicalRecord.getFirstName(), medicalRecord.getLastName(), medicalRecord.getBirthdate(), medicalRecord.getMedications(), medicalRecord.getAllergies());
 	      JsonParser.printJson();
 	      return new ResponseEntity<>(updatedMedicalRecord, httpStatus);
@@ -127,6 +139,19 @@ public class SafetyNetAlertsController {
 	      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	  }
+	 
+	 @DeleteMapping("/medicalRecord")
+	  public ResponseEntity<Persons> deleteMedicalRecords(@RequestBody MedicalRecords medicalRecord) {
+		 logger.info("HTTP DELETE request received at /medicalRecord URL ");
+		 try {
+			 HttpStatus httpStatus = medicalRecordService.deleteMedicalRecordsByName(medicalRecord);
+			 JsonParser.printJson();
+		      return new ResponseEntity<>(null, httpStatus);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	    }
 
 	
 

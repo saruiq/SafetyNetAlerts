@@ -19,7 +19,7 @@ public class MedicalRecordService {
 		JsonParser.personsProfile.setMedicalrecords(medicalrecords);	
 	}
 	
-	public HttpStatus findAndUpdateMedicalRecordsByName(MedicalRecords medicalRecord) {
+	public HttpStatus updateMedicalRecordsByName(MedicalRecords medicalRecord) {
 		MedicalRecords[] medicalRecords = JsonParser.personsProfile.getMedicalrecords();
 		for(MedicalRecords m : medicalRecords) {
 			if(m.getFirstName().equals(medicalRecord.getFirstName()) && m.getLastName().equals(medicalRecord.getLastName())) {
@@ -31,6 +31,29 @@ public class MedicalRecordService {
 		}
 		System.out.println("Medical Record Not Found");
 		return HttpStatus.INTERNAL_SERVER_ERROR;
+	}
+	
+	public HttpStatus deleteMedicalRecordsByName(MedicalRecords medicalRecord) {
+		Boolean medicalrecordDeleted = false;
+		MedicalRecords[] medicalRecords = JsonParser.personsProfile.getMedicalrecords();
+		List<MedicalRecords> medicalRecordsList = new ArrayList<MedicalRecords>();
+		for(MedicalRecords m : medicalRecords) {
+			if(!m.getFirstName().equals(medicalRecord.getFirstName()) && !m.getLastName().equals(medicalRecord.getLastName())) {
+				medicalRecordsList.add(m);
+				continue;
+			}
+			medicalrecordDeleted = true;
+		}
+		if(medicalrecordDeleted == true) {
+			MedicalRecords[] newMedicalRecordsArray = new MedicalRecords[medicalRecordsList.size()];
+			newMedicalRecordsArray = medicalRecordsList.toArray(newMedicalRecordsArray);
+			JsonParser.personsProfile.setMedicalrecords(newMedicalRecordsArray);
+			return HttpStatus.OK;
+		}else {
+			System.out.println("Medical Record Not Found");
+			return HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+	
 	}
 
 }
