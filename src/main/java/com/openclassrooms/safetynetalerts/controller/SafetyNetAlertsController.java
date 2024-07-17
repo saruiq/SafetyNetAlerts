@@ -1,10 +1,14 @@
 package com.openclassrooms.safetynetalerts.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -100,7 +104,7 @@ public class SafetyNetAlertsController {
 	  }
 	 
 	 @DeleteMapping("/fireStation")
-	  public ResponseEntity<Persons> deleteFireStations(@RequestBody FireStations fireStation) {
+	  public ResponseEntity<FireStations> deleteFireStations(@RequestBody FireStations fireStation) {
 		 logger.info("HTTP DELETE request received at /fireStation URL ");
 		 try {
 			 HttpStatus httpStatus = fireStationService.deleteFireStationsByAddress(fireStation);
@@ -141,7 +145,7 @@ public class SafetyNetAlertsController {
 	  }
 	 
 	 @DeleteMapping("/medicalRecord")
-	  public ResponseEntity<Persons> deleteMedicalRecords(@RequestBody MedicalRecords medicalRecord) {
+	  public ResponseEntity<MedicalRecords> deleteMedicalRecords(@RequestBody MedicalRecords medicalRecord) {
 		 logger.info("HTTP DELETE request received at /medicalRecord URL ");
 		 try {
 			 HttpStatus httpStatus = medicalRecordService.deleteMedicalRecordsByName(medicalRecord);
@@ -152,6 +156,20 @@ public class SafetyNetAlertsController {
 		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		    }
 	    }
+	 
+	 @GetMapping("/firestation?stationNumber={stationNumber}")
+	  public ResponseEntity<List<String>> listOfPersonsByFireStation(@PathVariable("stationNumber") String stationNumber) {
+		 logger.info("HTTP GET request received at /firestation?stationNumber={stationNumber} URL ");
+		 try {
+			 List<String> persons = fireStationService.getPersonsFromAddresses(stationNumber);
+			 //JsonParser.printJson();
+		      return new ResponseEntity<>(persons, HttpStatus.OK);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	    }
+
 
 	
 

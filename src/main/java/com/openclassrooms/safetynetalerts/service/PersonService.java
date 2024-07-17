@@ -57,5 +57,19 @@ public class PersonService {
 		}
 	
 	}
+	
+	public List<String> getEmailAddressesByCity(String city) {
+		Persons[] persons = JsonParser.personsProfile.getPersons();
+		List<String> emailAddresses = new ArrayList<String>();
+		for(Persons p : persons) {
+			if(p.getCity().equals(city)) {
+				emailAddresses.add(p.getEmail());
+			}
+			else {
+				System.out.println("City Not Found");
+			}
+		}
+		return emailAddresses;
+	}
 
 }

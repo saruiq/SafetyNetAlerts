@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 
 import com.openclassrooms.safetynetalerts.model.FireStations;
+import com.openclassrooms.safetynetalerts.model.Persons;
 import com.openclassrooms.safetynetalerts.utils.JsonParser;
 
 public class FireStationService {
@@ -54,5 +55,41 @@ public class FireStationService {
 		}
 	
 	}
+	
+	public List<String> getAddressesFromStationNumber(String stationNumber) {
+		FireStations[] fireStations = JsonParser.personsProfile.getFirestations();
+		List<String> addresses = new ArrayList<String>();
+		for(FireStations f : fireStations) {
+			if(f.getStation().equals(stationNumber)) {
+			   addresses.add(f.getAddress());
+			}	
+		}
+		return addresses;
+	}
+	
+	public List<String> getPersonsFromAddresses(String stationNumber) {
+		List<String> addresses = getAddressesFromStationNumber(stationNumber);
+		Persons[] allPersons = JsonParser.personsProfile.getPersons();
+		List<String> persons = new ArrayList<String>();
+		for(Persons p : allPersons) {
+			for(String address : addresses) {
+				if(p.getAddress().equals(address)) {
+					persons.add(p.getFirstName());
+					persons.add(p.getLastName());
+					persons.add(p.getAddress());
+					persons.add(p.getPhone());
+					
+				}
+			}
+		}
+		return persons;
+	}
+	
+//	public List<String> getPhoneNumbersFromStationNumber(String stationNumber) {
+//		List<String> persons = getPersonsFromAddresses(stationNumber);
+//		for(String p : persons) {
+//			if()
+//		}
+//	}
 
 }
