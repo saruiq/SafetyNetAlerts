@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.safetynetalerts.model.FireStations;
@@ -157,13 +158,39 @@ public class SafetyNetAlertsController {
 		    }
 	    }
 	 
-	 @GetMapping("/firestation?stationNumber={stationNumber}")
-	  public ResponseEntity<List<String>> listOfPersonsByFireStation(@PathVariable("stationNumber") String stationNumber) {
-		 logger.info("HTTP GET request received at /firestation?stationNumber={stationNumber} URL ");
+	 @GetMapping("/firestation")
+	  public ResponseEntity<List<String>> listOfPersonsByFireStation(@RequestParam("stationNumber") String stationNumber) {
+		 logger.info("HTTP GET request received at /firestation?stationNumber=<stationNumber> URL ");
 		 try {
 			 List<String> persons = fireStationService.getPersonsFromAddresses(stationNumber);
-			 //JsonParser.printJson();
 		      return new ResponseEntity<>(persons, HttpStatus.OK);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	    }
+	 
+	 @GetMapping("/phoneAlert")
+	  public ResponseEntity<List<String>> getListOfPhoneNumbersByFireStationNumber(@RequestParam("firestation") String firestation) {
+		 logger.info("HTTP GET request received at /phoneAlert?firestation=<firestation_number> URL ");
+		 try {
+			 List<String> phoneNumbers = fireStationService.getPhoneNumbersFromFireStationNumber(firestation);
+		      return new ResponseEntity<>(phoneNumbers, HttpStatus.OK);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	    }
+	 
+	 @GetMapping("/birthdate")
+	  public ResponseEntity<String> getBirthdatesFromMedicalRecords(@RequestParam("stationNumber") String stationNumber) {
+		 logger.info("HTTP GET request received at /phoneAlert?firestation=<firestation_number> URL ");
+		 try {
+			 String suumary = fireStationService.getSummaryOfAdultsAndChildren(stationNumber);
+//			 for(Integer a : summary) {
+//				 System.out.println(a);
+//			 }
+		      return new ResponseEntity<>(suumary, HttpStatus.OK);
 		    } catch (Exception e) {
 		    	e.printStackTrace();
 		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
