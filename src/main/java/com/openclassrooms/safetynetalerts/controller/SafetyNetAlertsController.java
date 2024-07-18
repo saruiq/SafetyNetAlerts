@@ -182,15 +182,27 @@ public class SafetyNetAlertsController {
 		    }
 	    }
 	 
-	 @GetMapping("/birthdate")
-	  public ResponseEntity<String> getBirthdatesFromMedicalRecords(@RequestParam("stationNumber") String stationNumber) {
-		 logger.info("HTTP GET request received at /phoneAlert?firestation=<firestation_number> URL ");
+//	 @GetMapping("/birthdate")
+//	  public ResponseEntity<String> getBirthdatesFromMedicalRecords(@RequestParam("stationNumber") String stationNumber) {
+//		 logger.info("HTTP GET request received at /phoneAlert?firestation=<firestation_number> URL ");
+//		 try {
+//			 String suumary = fireStationService.getSummaryOfAdultsAndChildren(stationNumber);
+////			 for(Integer a : summary) {
+////				 System.out.println(a);
+////			 }
+//		      return new ResponseEntity<>(suumary, HttpStatus.OK);
+//		    } catch (Exception e) {
+//		    	e.printStackTrace();
+//		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+//		    }
+//	    }
+
+	 @GetMapping("/communityEmail")
+	  public ResponseEntity<List<String>> getBirthdatesFromMedicalRecords(@RequestParam("city") String city) {
+		 logger.info("HTTP GET request received at /communityEmail?city=<city> URL ");
 		 try {
-			 String suumary = fireStationService.getSummaryOfAdultsAndChildren(stationNumber);
-//			 for(Integer a : summary) {
-//				 System.out.println(a);
-//			 }
-		      return new ResponseEntity<>(suumary, HttpStatus.OK);
+			 List<String> emailAddresses = personService.getEmailAddressesByCity(city);
+		      return new ResponseEntity<>(emailAddresses, HttpStatus.OK);
 		    } catch (Exception e) {
 		    	e.printStackTrace();
 		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
