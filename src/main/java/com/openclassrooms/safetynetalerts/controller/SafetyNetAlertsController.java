@@ -163,6 +163,8 @@ public class SafetyNetAlertsController {
 		 logger.info("HTTP GET request received at /firestation?stationNumber=<stationNumber> URL ");
 		 try {
 			 List<String> persons = fireStationService.getPersonsFromAddresses(stationNumber);
+			 String suumary = fireStationService.getSummaryOfAdultsAndChildren(stationNumber);
+			 persons.add(suumary);
 		      return new ResponseEntity<>(persons, HttpStatus.OK);
 		    } catch (Exception e) {
 		    	e.printStackTrace();
@@ -182,23 +184,23 @@ public class SafetyNetAlertsController {
 		    }
 	    }
 	 
-//	 @GetMapping("/birthdate")
-//	  public ResponseEntity<String> getBirthdatesFromMedicalRecords(@RequestParam("stationNumber") String stationNumber) {
-//		 logger.info("HTTP GET request received at /phoneAlert?firestation=<firestation_number> URL ");
-//		 try {
-//			 String suumary = fireStationService.getSummaryOfAdultsAndChildren(stationNumber);
-////			 for(Integer a : summary) {
-////				 System.out.println(a);
-////			 }
-//		      return new ResponseEntity<>(suumary, HttpStatus.OK);
-//		    } catch (Exception e) {
-//		    	e.printStackTrace();
-//		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//		    }
-//	    }
+	 @GetMapping("/birthdate")
+	  public ResponseEntity<List<String>> getBirthdatesFromMedicalRecords(@RequestParam("stationNumber") String stationNumber) {
+		 logger.info("HTTP GET request received at /phoneAlert?firestation=<firestation_number> URL ");
+		 try {
+			 List<String> birthdate = fireStationService.getBirthdatesFromMedicalRecords(stationNumber);
+//			 for(Integer a : summary) {
+//				 System.out.println(a);
+//			 }
+		      return new ResponseEntity<>(birthdate, HttpStatus.OK);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	    }
 
 	 @GetMapping("/communityEmail")
-	  public ResponseEntity<List<String>> getBirthdatesFromMedicalRecords(@RequestParam("city") String city) {
+	  public ResponseEntity<List<String>> getEmailAddressesFromCity(@RequestParam("city") String city) {
 		 logger.info("HTTP GET request received at /communityEmail?city=<city> URL ");
 		 try {
 			 List<String> emailAddresses = personService.getEmailAddressesByCity(city);

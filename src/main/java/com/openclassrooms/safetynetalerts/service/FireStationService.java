@@ -109,12 +109,10 @@ public class FireStationService {
 			lastNames.add(lastName);
 		}
 		for(MedicalRecords m : medicalRecords) {
-			for(String fn : firstNames) {
-				for(String ln : lastNames) {
-					if(m.getFirstName().equals(fn) && m.getLastName().equals(ln)) {
+			for(int i = 0; i < firstNames.size(); i++) {
+					if(m.getFirstName().equals(firstNames.get(i)) && m.getLastName().equals(lastNames.get(i))) {
 						birthDates.add(m.getBirthdate());
 					}
-				}
 				
 			}
 		}
@@ -161,7 +159,7 @@ public class FireStationService {
 				child++;
 			}
 		}
-		summary = "Adults: " + adult + "\nChildren: " + child;
+		summary = "Adults: " + adult + ", Children: " + child;
 		return summary;
 	}
 	
