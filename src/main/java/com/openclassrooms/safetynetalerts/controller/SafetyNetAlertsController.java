@@ -163,8 +163,8 @@ public class SafetyNetAlertsController {
 		 logger.info("HTTP GET request received at /firestation?stationNumber=<stationNumber> URL ");
 		 try {
 			 List<String> persons = fireStationService.getPersonsFromAddresses(stationNumber);
-			 String suumary = fireStationService.getSummaryOfAdultsAndChildren(stationNumber);
-			 persons.add(suumary);
+			 String summary = fireStationService.getSummaryOfAdultsAndChildren(stationNumber);
+			 persons.add(summary);
 		      return new ResponseEntity<>(persons, HttpStatus.OK);
 		    } catch (Exception e) {
 		    	e.printStackTrace();
@@ -205,6 +205,42 @@ public class SafetyNetAlertsController {
 		 try {
 			 List<String> emailAddresses = personService.getEmailAddressesByCity(city);
 		      return new ResponseEntity<>(emailAddresses, HttpStatus.OK);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	    }
+	 
+	 @GetMapping("/fire")
+	  public ResponseEntity<List<String>> getFireStationNumberAndPersonsFromAddress(@RequestParam("address") String address) {
+		 logger.info("HTTP GET request received at /fire?address=<address> URL ");
+		 try {
+			 List<String> stationNumberAndPersons = fireStationService.getFireStationNumberAndPersonsFromAddress(address);
+		      return new ResponseEntity<>(stationNumberAndPersons, HttpStatus.OK);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	    }
+	 
+	 @GetMapping("/childAlert")
+	  public ResponseEntity<List<String>> getChildrenByAddress(@RequestParam("address") String address) {
+		 logger.info("HTTP GET request received at /childAlert?address=<address> URL ");
+		 try {
+			 List<String> children = personService.listOfChildrenByAddress(address);
+		      return new ResponseEntity<>(children, HttpStatus.OK);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	    }
+	 
+	 @GetMapping("/personInfo")
+	  public ResponseEntity<List<String>> getPersonInfo(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+		 logger.info("HTTP GET request received at /personInfo?firstName=<firstName>&lastName=<lastName URL ");
+		 try {
+			 List<String> personInfo = personService.getPersonInfo(firstName, lastName);
+		      return new ResponseEntity<>(personInfo, HttpStatus.OK);
 		    } catch (Exception e) {
 		    	e.printStackTrace();
 		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

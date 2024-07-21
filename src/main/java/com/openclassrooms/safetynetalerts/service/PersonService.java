@@ -1,11 +1,15 @@
 package com.openclassrooms.safetynetalerts.service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
+import com.openclassrooms.safetynetalerts.model.FireStations;
+import com.openclassrooms.safetynetalerts.model.MedicalRecords;
 import com.openclassrooms.safetynetalerts.model.Persons;
 import com.openclassrooms.safetynetalerts.utils.JsonParser;
 
@@ -70,6 +74,94 @@ public class PersonService {
 			}
 		}
 		return emailAddresses;
+	}
+	
+	public List<String> listOfChildrenByAddress(String address) {
+		Persons[] persons = JsonParser.personsProfile.getPersons();
+		MedicalRecords[] medicalRecords = JsonParser.personsProfile.getMedicalrecords();
+		List<String> adults = new ArrayList<String>();
+		List<String> childs = new ArrayList<String>();
+		int child = 0;
+		String birthDate;
+		String[] newDate;
+		String month;
+		String day;
+		String year;
+		String finalDate;
+		LocalDate givenDate;
+		LocalDate currentDate;
+		int age = 0;
+		
+		for(Persons p : persons) {
+			if(p.getAddress().equals(address)) {
+				for(MedicalRecords m : medicalRecords) {
+					if(m.getFirstName().equals(p.getFirstName()) && m.getLastName().equals(p.getLastName())) {
+						birthDate = m.getBirthdate();
+						newDate = birthDate.split("/");
+						month = newDate[0];
+						day = newDate[1];
+						year = newDate[2];
+						finalDate = year + "-" + month + "-" + day;
+						givenDate = LocalDate.parse(finalDate);
+						currentDate = LocalDate.now();
+						if(givenDate != null && currentDate != null) {
+							age = Period.between(givenDate, currentDate).getYears();
+						} 
+						if(age >= 18) {
+							adults.add(m.getFirstName() + " " + m.getLastName());
+						}
+						else {
+							child++;
+							childs.add("Child #" + child + " " + m.getFirstName() + " " + m.getLastName() + ", Age: " + age);
+						}
+					}
+				}
+			}
+		}
+		if(!childs.isEmpty()) {
+			childs.addAll(adults);
+		}
+		else {
+			childs.add("");
+		}
+		
+		return childs;
+	}
+	
+	public List<String> getPersonInfo(String firstName, String lastName) {
+		Persons[] persons = JsonParser.personsProfile.getPersons();
+		MedicalRecords[] medicalRecords = JsonParser.personsProfile.getMedicalrecords();
+		List<String> personInfo = new ArrayList<String>();
+		String birthDate;
+		String[] newDate;
+		String month;
+		String day;
+		String year;
+		String finalDate;
+		LocalDate givenDate;
+		LocalDate currentDate;
+		int age = 0;
+		for(Persons p : persons) {
+			if(p.getFirstName().equals(firstName) && p.getLastName().equals(lastName)) {
+				for(MedicalRecords m : medicalRecords) {
+					if(m.getFirstName().equals(p.getFirstName()) && m.getLastName().equals(p.getLastName())) {
+						birthDate = m.getBirthdate();
+						newDate = birthDate.split("/");
+						month = newDate[0];
+						day = newDate[1];
+						year = newDate[2];
+						finalDate = year + "-" + month + "-" + day;
+						givenDate = LocalDate.parse(finalDate);
+						currentDate = LocalDate.now();
+						if(givenDate != null && currentDate != null) {
+							age = Period.between(givenDate, currentDate).getYears();
+						} 
+						personInfo.add(m.getFirstName() + " " + m.getLastName() + ", Age: " + age + ", Email: " + p.getEmail() + ", Medications: " + Arrays.toString(m.getMedications()) + ", Allergies: " + Arrays.toString(m.getAllergies()));
+					}
+				}
+			}
+		}
+		return personInfo;
 	}
 	
 

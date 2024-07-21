@@ -163,6 +163,52 @@ public class FireStationService {
 		return summary;
 	}
 	
+	public List<String> getFireStationNumberAndPersonsFromAddress(String address) {
+		FireStations[] fireStations = JsonParser.personsProfile.getFirestations();
+		Persons[] allPersons = JsonParser.personsProfile.getPersons();
+		List<String> stationNumbers = new ArrayList<String>();
+		List<String> persons = new ArrayList<String>();
+		MedicalRecords[] medicalRecords = JsonParser.personsProfile.getMedicalrecords();
+		String birthDate;
+		String[] newDate;
+		String month;
+		String day;
+		String year;
+		String finalDate;
+		LocalDate givenDate;
+		LocalDate currentDate;
+		int age = 0;
+		for(FireStations f : fireStations) {
+			if(f.getAddress().equals(address)) {
+				stationNumbers.add("Station Number: " + f.getStation());
+			}
+		}
+		for(Persons p : allPersons) {
+			if(p.getAddress().equals(address)) {
+				for(MedicalRecords m : medicalRecords) {
+					if(m.getFirstName().equals(p.getFirstName()) && m.getLastName().equals(p.getLastName())) {
+						birthDate = m.getBirthdate();
+						newDate = birthDate.split("/");
+						month = newDate[0];
+						day = newDate[1];
+						year = newDate[2];
+						finalDate = year + "-" + month + "-" + day;
+						givenDate = LocalDate.parse(finalDate);
+						currentDate = LocalDate.now();
+						if(givenDate != null && currentDate != null) {
+							age = Period.between(givenDate, currentDate).getYears();
+						} 
+						persons.add(m.getFirstName() + " " + m.getLastName() + ", Phone: " + p.getPhone() + ", " + "Age: " + age + ", Medications: " + Arrays.toString(m.getMedications()) + ", Allergies: " + Arrays.toString(m.getAllergies()));
+					}
+				}
+			}
+		}
+		stationNumbers.addAll(persons);
+		
+		
+		return stationNumbers;
+	}
+	
 	
 	public List<String> getPhoneNumbersFromFireStationNumber(String fireStationNumber) {
 		List<String> persons = getPersonsFromAddresses(fireStationNumber);
