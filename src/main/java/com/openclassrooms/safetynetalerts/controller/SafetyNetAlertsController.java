@@ -246,6 +246,18 @@ public class SafetyNetAlertsController {
 		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		    }
 	    }
+	 
+	 @GetMapping("/flood")
+	  public ResponseEntity<List<String>> getHouseHoldInfoFromStationNumbers(@RequestParam("stations") List<String> stations) {
+		 logger.info("HTTP GET request received at /flood/stations?stations=<a list of station_numbers> URL ");
+		 try {
+			 List<String> houseHoldInfo = fireStationService.getHouseHoldFromStationNumbers(stations);
+		      return new ResponseEntity<>(houseHoldInfo, HttpStatus.OK);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	    }
 
 
 	

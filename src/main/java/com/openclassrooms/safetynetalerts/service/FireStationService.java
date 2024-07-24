@@ -222,5 +222,58 @@ public class FireStationService {
 		}
 		return phoneNumbers;
 	}
+	
+	public List<String> getHouseHoldFromStationNumbers(List<String> stationNumbers) {
+		List<String> addresses = new ArrayList<String>();
+		List<String> persons = new ArrayList<String>();
+		List<String> allStationNumbers = new ArrayList<String>();
+		List<String> allAddresses = new ArrayList<String>();
+		List<String> returnString = new ArrayList<String>();
+		Persons[] allPersons = JsonParser.personsProfile.getPersons();
+		MedicalRecords[] medicalRecords = JsonParser.personsProfile.getMedicalrecords();
+		String birthDate;
+		String[] newDate;
+		String month;
+		String day;
+		String year;
+		String finalDate;
+		LocalDate givenDate;
+		LocalDate currentDate;
+		int age = 0;
+		
+		for(int i = 0; i < stationNumbers.size(); i++) {
+			allStationNumbers.add("Station #" + stationNumbers.get(i));
+			returnString.add("Station #" + stationNumbers.get(i));
+			addresses = getAddressesFromStationNumber(stationNumbers.get(i));
+			allAddresses.addAll(addresses);
+			for(Persons p : allPersons) {
+				for(String address : addresses) {
+					if(p.getAddress().equals(address)) {
+						for(MedicalRecords m : medicalRecords) {
+							if(m.getFirstName().equals(p.getFirstName()) && m.getLastName().equals(p.getLastName())) {
+								birthDate = m.getBirthdate();
+								newDate = birthDate.split("/");
+								month = newDate[0];
+								day = newDate[1];
+								year = newDate[2];
+								finalDate = year + "-" + month + "-" + day;
+								givenDate = LocalDate.parse(finalDate);
+								currentDate = LocalDate.now();
+								if(givenDate != null && currentDate != null) {
+									age = Period.between(givenDate, currentDate).getYears();
+								}
+								persons.add(m.getFirstName() + " " + m.getLastName() + ", Phone: " + p.getPhone() + ", " + "Age: " + age + ", Address: " + p.getAddress() +  ", Medications: " + Arrays.toString(m.getMedications()) + ", Allergies: " + Arrays.toString(m.getAllergies()));
+							}
+						}
+					}
+				}
+			}
+			returnString.addAll(persons);
+			returnString.add("---------------------------------------");
+		}
+		
+		
+		return returnString;
+	}
 
 }
