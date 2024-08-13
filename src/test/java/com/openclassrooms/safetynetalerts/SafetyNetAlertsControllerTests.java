@@ -20,6 +20,7 @@ import com.openclassrooms.safetynetalerts.model.FireStations;
 import com.openclassrooms.safetynetalerts.service.FireStationService;
 import com.openclassrooms.safetynetalerts.service.MedicalRecordService;
 import com.openclassrooms.safetynetalerts.service.PersonService;
+import com.openclassrooms.safetynetalerts.utils.JsonParser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -45,15 +46,19 @@ public class SafetyNetAlertsControllerTests {
 	
 	@MockBean
 	private PersonService personService;
+	
+	@MockBean
+	private static JsonParser jsonParser;
 
     @BeforeEach
     public void setup () {
+    	
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
     void listOfPersonsByFireStationTest() throws Exception {
-        mockMvc.perform(get("/firestation", "1")).andExpect(status().isOk());
+        mockMvc.perform(get("/firestation?stationNumber=1")).andExpect(status().isOk());
     }
     
 
