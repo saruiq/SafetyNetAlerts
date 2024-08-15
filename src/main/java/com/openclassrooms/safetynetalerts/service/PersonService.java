@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
-import com.openclassrooms.safetynetalerts.model.FireStations;
 import com.openclassrooms.safetynetalerts.model.MedicalRecords;
 import com.openclassrooms.safetynetalerts.model.Persons;
 import com.openclassrooms.safetynetalerts.utils.JsonParser;
