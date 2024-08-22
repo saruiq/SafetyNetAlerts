@@ -160,7 +160,7 @@ public class SafetyNetAlertsController {
 	 
 	 @GetMapping("/firestation")
 	  public ResponseEntity<List<String>> listOfPersonsByFireStation(@RequestParam("stationNumber") String stationNumber) {
-		 logger.info("HTTP GET request received at /firestation?stationNumber=<stationNumber> URL ");
+		 logger.info("HTTP GET request received at /firestation?stationNumber=<"+stationNumber+"> URL ");
 		 try {
 			 List<String> persons = fireStationService.getPersonsFromAddresses(stationNumber);
 			 String summary = fireStationService.getSummaryOfAdultsAndChildren(stationNumber);
@@ -174,7 +174,7 @@ public class SafetyNetAlertsController {
 	 
 	 @GetMapping("/phoneAlert")
 	  public ResponseEntity<List<String>> getListOfPhoneNumbersByFireStationNumber(@RequestParam("firestation") String firestation) {
-		 logger.info("HTTP GET request received at /phoneAlert?firestation=<firestation_number> URL ");
+		 logger.info("HTTP GET request received at /phoneAlert?firestation=<"+firestation+"> URL ");
 		 try {
 			 List<String> phoneNumbers = fireStationService.getPhoneNumbersFromFireStationNumber(firestation);
 		      return new ResponseEntity<>(phoneNumbers, HttpStatus.OK);
@@ -184,24 +184,24 @@ public class SafetyNetAlertsController {
 		    }
 	    }
 	 
-	 @GetMapping("/birthdate")
-	  public ResponseEntity<List<String>> getBirthdatesFromMedicalRecords(@RequestParam("stationNumber") String stationNumber) {
-		 logger.info("HTTP GET request received at /phoneAlert?firestation=<firestation_number> URL ");
-		 try {
-			 List<String> birthdate = fireStationService.getBirthdatesFromMedicalRecords(stationNumber);
-//			 for(Integer a : summary) {
-//				 System.out.println(a);
-//			 }
-		      return new ResponseEntity<>(birthdate, HttpStatus.OK);
-		    } catch (Exception e) {
-		    	e.printStackTrace();
-		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		    }
-	    }
+//	 @GetMapping("/birthdate")
+//	  public ResponseEntity<List<String>> getBirthdatesFromMedicalRecords(@RequestParam("stationNumber") String stationNumber) {
+//		 logger.info("HTTP GET request received at /phoneAlert?firestation=<"+stationNumber+"> URL ");
+//		 try {
+//			 List<String> birthdate = fireStationService.getBirthdatesFromMedicalRecords(stationNumber);
+////			 for(Integer a : summary) {
+////				 System.out.println(a);
+////			 }
+//		      return new ResponseEntity<>(birthdate, HttpStatus.OK);
+//		    } catch (Exception e) {
+//		    	e.printStackTrace();
+//		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+//		    }
+//	    }
 
 	 @GetMapping("/communityEmail")
 	  public ResponseEntity<List<String>> getEmailAddressesFromCity(@RequestParam("city") String city) {
-		 logger.info("HTTP GET request received at /communityEmail?city=<city> URL ");
+		 logger.info("HTTP GET request received at /communityEmail?city=<"+city+"> URL ");
 		 try {
 			 List<String> emailAddresses = personService.getEmailAddressesByCity(city);
 		      return new ResponseEntity<>(emailAddresses, HttpStatus.OK);
@@ -213,7 +213,7 @@ public class SafetyNetAlertsController {
 	 
 	 @GetMapping("/fire")
 	  public ResponseEntity<List<String>> getFireStationNumberAndPersonsFromAddress(@RequestParam("address") String address) {
-		 logger.info("HTTP GET request received at /fire?address=<address> URL ");
+		 logger.info("HTTP GET request received at /fire?address=<"+address+"> URL ");
 		 try {
 			 List<String> stationNumberAndPersons = fireStationService.getFireStationNumberAndPersonsFromAddress(address);
 		      return new ResponseEntity<>(stationNumberAndPersons, HttpStatus.OK);
@@ -225,7 +225,7 @@ public class SafetyNetAlertsController {
 	 
 	 @GetMapping("/childAlert")
 	  public ResponseEntity<List<String>> getChildrenByAddress(@RequestParam("address") String address) {
-		 logger.info("HTTP GET request received at /childAlert?address=<address> URL ");
+		 logger.info("HTTP GET request received at /childAlert?address=<"+address+"> URL ");
 		 try {
 			 List<String> children = personService.listOfChildrenByAddress(address);
 		      return new ResponseEntity<>(children, HttpStatus.OK);
@@ -237,7 +237,7 @@ public class SafetyNetAlertsController {
 	 
 	 @GetMapping("/personInfo")
 	  public ResponseEntity<List<String>> getPersonInfo(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-		 logger.info("HTTP GET request received at /personInfo?firstName=<firstName>&lastName=<lastName URL ");
+		 logger.info("HTTP GET request received at /personInfo?firstName=<"+firstName+">&lastName=<"+lastName+"> URL ");
 		 try {
 			 List<String> personInfo = personService.getPersonInfo(firstName, lastName);
 		      return new ResponseEntity<>(personInfo, HttpStatus.OK);
@@ -249,7 +249,7 @@ public class SafetyNetAlertsController {
 	 
 	 @GetMapping("/flood")
 	  public ResponseEntity<List<String>> getHouseHoldInfoFromStationNumbers(@RequestParam("stations") List<String> stations) {
-		 logger.info("HTTP GET request received at /flood/stations?stations=<a list of station_numbers> URL ");
+		 logger.info("HTTP GET request received at /flood?stations=<"+stations+"> URL ");
 		 try {
 			 List<String> houseHoldInfo = fireStationService.getHouseHoldFromStationNumbers(stations);
 		      return new ResponseEntity<>(houseHoldInfo, HttpStatus.OK);
