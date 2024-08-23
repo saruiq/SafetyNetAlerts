@@ -126,25 +126,26 @@ public class SafetyNetAlertsControllerTests {
     
     @Test
     void updatePersonsTest() throws Exception {
-    	Persons person = new Persons("Sarah", "Iqbal", "1234 Birmingham St.", "Naperville", "18467", "348-948-1836", "orange@email.com"); 
+    	Persons person = new Persons("John", "Boyd", "1234 Birmingham St.", "Aurora", "18467", "348-948-1836", "orange@email.com"); 
         mockMvc.perform( MockMvcRequestBuilders
-      	      .post("/person")
+      	      .put("/person")
       	      .content(asJsonString(person))
       	      .contentType(MediaType.APPLICATION_JSON)
       	      .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated());
+            .andExpect(status().isOk());
           
     }
     
     @Test
     void deletePersonsTest() throws Exception {
-    	Persons person = new Persons("Sarah", "Iqbal", "1234 Birmingham St.", "Naperville", "18467", "348-948-1836", "orange@email.com"); 
-        mockMvc.perform( MockMvcRequestBuilders
-      	      .post("/person")
-      	      .content(asJsonString(person))
-      	      .contentType(MediaType.APPLICATION_JSON)
-      	      .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated());
+    	Persons person = new Persons("John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512", "jaboyd@email.com"); 
+    	 mockMvc.perform( MockMvcRequestBuilders
+         	      .delete("/person")
+         	      .content(asJsonString(person))
+         	      .contentType(MediaType.APPLICATION_JSON)
+         	      .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk());
+        
           
     }
     
@@ -162,31 +163,32 @@ public class SafetyNetAlertsControllerTests {
     
     @Test
     void updateFireStationsTest() throws Exception {
-    	Persons person = new Persons("Sarah", "Iqbal", "1234 Birmingham St.", "Naperville", "18467", "348-948-1836", "orange@email.com"); 
+    	FireStations fireStation = new FireStations("951 LoneTree Rd", "1");  
         mockMvc.perform( MockMvcRequestBuilders
-      	      .post("/fireStation")
-      	      .content(asJsonString(person))
+      	      .put("/fireStation")
+      	      .content(asJsonString(fireStation))
       	      .contentType(MediaType.APPLICATION_JSON)
       	      .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated());
+            .andExpect(status().isOk());
           
     }
     
     @Test
     void deleteFireStationsTest() throws Exception {
-    	Persons person = new Persons("Sarah", "Iqbal", "1234 Birmingham St.", "Naperville", "18467", "348-948-1836", "orange@email.com"); 
+    	FireStations fireStation = new FireStations("951 LoneTree Rd", "2"); 
         mockMvc.perform( MockMvcRequestBuilders
-      	      .post("/fireStation")
-      	      .content(asJsonString(person))
+      	      .delete("/fireStation")
+      	      .content(asJsonString(fireStation))
       	      .contentType(MediaType.APPLICATION_JSON)
       	      .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated());
+            .andExpect(status().isOk());
           
     }
     
     @Test
     void createMedicalRecordsTest() throws Exception {
-    	MedicalRecords medicalRecord = new MedicalRecords("Sarah", "Iqbal", "01/27/2000", null , null); 
+    	
+    	MedicalRecords medicalRecord = new MedicalRecords("Sarah", "Iqbal", "1/27/2000", new String[] {}, new String[] {});
         mockMvc.perform( MockMvcRequestBuilders
       	      .post("/medicalRecord")
       	      .content(asJsonString(medicalRecord))
@@ -198,25 +200,25 @@ public class SafetyNetAlertsControllerTests {
     
     @Test
     void updateMedicalRecordsTest() throws Exception {
-    	Persons person = new Persons("Sarah", "Iqbal", "1234 Birmingham St.", "Naperville", "18467", "348-948-1836", "orange@email.com"); 
+    	MedicalRecords medicalRecord = new MedicalRecords("John", "Boyd", "1/27/2000", new String[] {}, new String[] {});
         mockMvc.perform( MockMvcRequestBuilders
-      	      .post("/medicalRecord")
-      	      .content(asJsonString(person))
+      	      .put("/medicalRecord")
+      	      .content(asJsonString(medicalRecord))
       	      .contentType(MediaType.APPLICATION_JSON)
       	      .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated());
+            .andExpect(status().isOk());
           
     }
     
     @Test
     void deleteMedicalRecordsTest() throws Exception {
-    	Persons person = new Persons("Sarah", "Iqbal", "1234 Birmingham St.", "Naperville", "18467", "348-948-1836", "orange@email.com"); 
+    	MedicalRecords medicalRecord = new MedicalRecords("John", "Boyd", "03/06/1984", new String[] {"aznol:350mg, hydrapermazol:100mg"}, new String[] {"nillacilan"});
         mockMvc.perform( MockMvcRequestBuilders
-      	      .post("/medicalRecord")
-      	      .content(asJsonString(person))
+      	      .delete("/medicalRecord")
+      	      .content(asJsonString(medicalRecord))
       	      .contentType(MediaType.APPLICATION_JSON)
       	      .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated());
+            .andExpect(status().isOk());
           
     }
    
